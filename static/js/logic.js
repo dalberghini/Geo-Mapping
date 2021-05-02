@@ -30,10 +30,10 @@ function createFeatures(earthquakeData) {
         return mag*50000;
     }
     var earthquakes = L.geoJSON(earthquakeData, { 
-        pointToLayer : function (earthquakeData, latlng) {
+        pointToLayer : function (data, latlng) {
             return L.circle(latlng, {
-                radius : circleRadius(earthquakeData.properties.mag), 
-                color : colorMarker(earthquakeData.geometry.coordinates[2]),
+                radius : circleRadius(data.properties.mag), 
+                color : colorMarker(data.geometry.coordinates[2]),
                 fillOpacity : 1
             });
         },
@@ -93,9 +93,15 @@ function createMap(earthquakes) {
       div.innerHTML +=
         '<p>Legend</p>'
       for (var i = 0; i < legends.length; i++) {
-        div.innerHTML +=
-            '<i style="background:' + colorMarker(legends[i]) + '"></i> ' +
-            legends[i] + " " + (legends[i ] ? '&ndash;' + " " + (legends[i + 1]-.01) + '<br>' : '+');
+            if (legends[i] == 400) {
+                div.innerHTML +=
+                '<i style="background:' + colorMarker(legends[i]) + '"></i> ' +
+                legends[i]+ '+'}
+
+            else {
+                div.innerHTML +=
+                '<i style="background:' + colorMarker(legends[i]) + '"></i> ' +
+                legends[i] + " " + (legends[i ] ? '&ndash;' + " " + (legends[i + 1]-.01) + '<br>' : '+')};
     }
     return div;
   };
