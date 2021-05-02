@@ -78,7 +78,7 @@ function createMap(earthquakes) {
   var myMap = L.map("mapid", {
       center: [0,0],
       zoom : 2,
-      layers : [lightMap, earthquakes]
+      layers : [outdoorsMap, earthquakes]
   });
   L.control.layers(baseMaps,overlayMaps, {
       collapsed: false
