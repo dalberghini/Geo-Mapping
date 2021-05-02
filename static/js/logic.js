@@ -3,12 +3,40 @@ var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_week.ge
 d3.json(url, function(data) {
     createFeatures(data.features);
 });
+function colorMarker(mag) {
+	if (-10 <= mag & mag <=9.99) {
+		return "#7cfc00";
+	} 
+    else if (10 <= mag & mag <39.99) {
+		return "#aec0ff";
+	} 
+    else if ( 40<= mag & mag <=89.99) {
+		return "#db7300";
+	} 
+    else if (90 <= mag & mag <=399.99) {
+		return "#63000c";
+	}
+    else if( mag <=400){
+		return "#170004";
+	}
+}
 function createFeatures(earthquakeData) {
     function onEachFeature(feature, layer) {
         layer.bindPopup("<h3>" + feature.properties.place + 
-        "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
+        "</h3><hr><p>" + new Date(feature.properties.time) + "</p>"
+        + "<p>Magnitude: " + feature.properties.mag + "</p>" + "<p>Depth: " + feature.geometry.coordinates[2] + "</p>");
     }
-    var earthquakes = L.geoJSON(earthquakeData, {
+    function circleRadius(mag) {
+        return mag*50000;
+    }
+    var earthquakes = L.geoJSON(earthquakeData, { 
+        pointToLayer : function (earthquakeData, latlng) {
+            return L.circle(latlng, {
+                radius : circleRadius(earthquakeData.properties.mag), 
+                color : colorMarker(earthquakeData.geometry.coordinates[2]),
+                fillOpacity : 1
+            });
+        },
         onEachFeature: onEachFeature
     });
     createMap(earthquakes);
@@ -55,4 +83,21 @@ function createMap(earthquakes) {
   L.control.layers(baseMaps,overlayMaps, {
       collapsed: false
   }).addTo(myMap);
+
+  var legend = L.control({
+      position : "bottomright"
+  });
+  legend.onAdd = function(map) {
+      var div = L.DomUtil.create("div", "info legend"),
+      earthquake = [-10, 10, 40, 90, 400]
+      div.innerHTML +=
+        '<p>Legend</p>'
+      for (var i = 0; i < earthquake.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + colorMarker(earthquake[i]) + '"></i> ' +
+            earthquake[i] + (earthquake[i ] ? '&ndash;' + (earthquake[i + 1]-.01) + '<br>' : '+');
+    }
+    return div;
+  };
+  legend.addTo(myMap);
 }
