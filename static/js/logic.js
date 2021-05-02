@@ -8,16 +8,16 @@ function colorMarker(mag) {
 		return "#7cfc00";
 	} 
     else if (10 <= mag & mag <39.99) {
-		return "#aec0ff";
+		return "#e3ec5a";
 	} 
     else if ( 40<= mag & mag <=89.99) {
-		return "#db7300";
+		return "#dfbe57";
 	} 
     else if (90 <= mag & mag <=399.99) {
-		return "#63000c";
+		return "#d24f22";
 	}
     else if( mag <=400){
-		return "#170004";
+		return "#600816";
 	}
 }
 function createFeatures(earthquakeData) {
