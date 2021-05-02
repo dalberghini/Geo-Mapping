@@ -89,13 +89,13 @@ function createMap(earthquakes) {
   });
   legend.onAdd = function(map) {
       var div = L.DomUtil.create("div", "info legend"),
-      earthquake = [-10, 10, 40, 90, 400]
+      legends = [-10, 10, 40, 90, 400]
       div.innerHTML +=
         '<p>Legend</p>'
-      for (var i = 0; i < earthquake.length; i++) {
+      for (var i = 0; i < legends.length; i++) {
         div.innerHTML +=
-            '<i style="background:' + colorMarker(earthquake[i]) + '"></i> ' +
-            earthquake[i] + (earthquake[i ] ? '&ndash;' + (earthquake[i + 1]-.01) + '<br>' : '+');
+            '<i style="background:' + colorMarker(legends[i]) + '"></i> ' +
+            legends[i] + " " + (legends[i ] ? '&ndash;' + " " + (legends[i + 1]-.01) + '<br>' : '+');
     }
     return div;
   };
