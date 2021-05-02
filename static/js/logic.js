@@ -26,13 +26,10 @@ function createFeatures(earthquakeData) {
         "</h3><hr><p>" + new Date(feature.properties.time) + "</p>"
         + "<p>Magnitude: " + feature.properties.mag + "</p>" + "<p>Depth: " + feature.geometry.coordinates[2] + "</p>");
     }
-    function circleRadius(mag) {
-        return mag*50000;
-    }
     var earthquakes = L.geoJSON(earthquakeData, { 
         pointToLayer : function (data, latlng) {
             return L.circle(latlng, {
-                radius : circleRadius(data.properties.mag), 
+                radius : data.properties.mag*50000, 
                 color : colorMarker(data.geometry.coordinates[2]),
                 fillOpacity : 1
             });
